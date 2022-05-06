@@ -5,6 +5,7 @@ address public owner;
 uint public id=0;
 uint public winner=0;
 bool public endvoting;
+uint time;
 
 
 constructor (){
@@ -32,9 +33,11 @@ mapping (uint => CandidateResults) public listResults; // мэпинг ключ 
 
 function addVoter (address _temp) public payable { // Функция которая добавляет кандидата для голосования
   require (checkPayed[_temp].pay == true && checkCandidateInStruct(_temp)!=true && endvoting==false && msg.sender == owner); // Проверка оплаты и что такой кадидат уже не добавлен и добавлять кандидатов может только owner
+  if (id==0){time = block.timestamp;}
   id= id+1;
   listResults[id].vote = 0;
   listResults[id].candidate = _temp;
+  
  // results[msg.sender].vote=0; 
   // results[_temp].candidate = _temp;
 }
@@ -63,8 +66,8 @@ function checkCandidateInStruct(address _temp2) public returns(bool _r){
 
 }
 
-function endVote() public { // Функция позволяющая пользователю который произвел оплату завершить голосование
-   require(checkPayed[msg.sender].pay == true && endvoting==false); 
+function endVote() public { // Функция позволяющая пользователю который произвел оплату завершить голосование через 3 дня после начала
+   require((checkPayed[msg.sender].pay == true || msg.sender == owner) && endvoting==false && block.timestamp> time + 3 days); 
     winner = findMaxValue();
     address payable _to= payable (listResults[id].candidate);
     address _thiscontract = address(this);  //узнаем адрес текущего контракта
