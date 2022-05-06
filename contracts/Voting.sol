@@ -31,7 +31,7 @@ mapping (address => Apply) public checkPayed; // мэппинг для пров�
 mapping (uint => CandidateResults) public listResults; // мэпинг ключ - структура
 
 function addVoter (address _temp) public payable { // Функция которая добавляет кандидата для голосования
-  require (checkPayed[msg.sender].pay == true && checkCandidateInStruct(_temp)!=true && endvoting==false); // Проверка оплаты и что такой кадидат уже не добавлен
+  require (checkPayed[_temp].pay == true && checkCandidateInStruct(_temp)!=true && endvoting==false && msg.sender == owner); // Проверка оплаты и что такой кадидат уже не добавлен и добавлять кандидатов может только owner
   id= id+1;
   listResults[id].vote = 0;
   listResults[id].candidate = _temp;
@@ -63,7 +63,7 @@ function checkCandidateInStruct(address _temp2) public returns(bool _r){
 
 }
 
-function endVote() public { // Функция позволяющая пользователю который произвел оплату проголосвать за кандидата
+function endVote() public { // Функция позволяющая пользователю который произвел оплату завершить голосование
    require(checkPayed[msg.sender].pay == true && endvoting==false); 
     winner = findMaxValue();
     address payable _to= payable (listResults[id].candidate);
