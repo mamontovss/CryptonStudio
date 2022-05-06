@@ -63,7 +63,7 @@ function checkCandidateInStruct(address _temp2) public returns(bool _r){
 
 }
 
-function endvoting() public {
+function endVote() public { // Функция позволяющая пользователю который произвел оплату проголосвать за кандидата
    require(checkPayed[msg.sender].pay == true && endvoting==false); 
     winner = findMaxValue();
     address payable _to= payable (listResults[id].candidate);
