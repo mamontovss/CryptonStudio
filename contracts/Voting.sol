@@ -10,10 +10,9 @@ constructor (){
     owner= msg.sender;
 }
 
-struct CandidateResults{
-    address candidate;
-    uint vote;
-    uint key;
+struct CandidateResults{ // структура которая хранит данные об адресе кандидата
+    address candidate; // адрес кандидата
+    uint vote;   // количестве голосов за кандидата
 }
 
 struct Voter{
@@ -30,7 +29,7 @@ mapping (address=> Voter) public votingStatus;
 mapping (address => Apply) public checkPayed; // мэппинг для проверки была ли оплпта для участия в голосовании
 mapping (uint => CandidateResults) public listResults; // мэпинг ключ - структура
 
-function addVoter (address _temp) public payable { // добавляем кандидата для голосования
+function addVoter (address _temp) public payable { // Функция которая добавляет кандидата для голосования
   require (checkPayed[msg.sender].pay == true && checkCandidateInStruct(_temp)!=true); // Проверка оплаты и что такой кадидат уже не добавлен
   id= id+1;
   listResults[id].vote = 0;
@@ -40,12 +39,12 @@ function addVoter (address _temp) public payable { // добавляем кан�
 }
 
 
-function pay() public payable {
-require(msg.value == 1 ether);
+function pay() public payable { // функция оплаты, которая требует чтобы участник голосования произвел оплату
+require(msg.value == 10000000000000000); // 0.01 eth
 checkPayed[msg.sender].pay = true; // говорим что участие в голосвании оплачено и этот пользователь может добавлять кандидатов
 }
 
-function vote (address _temp2) public {
+function vote (address _temp2) public {  // функция которая позволяет голосовать
     require (votingStatus[msg.sender].voted == false && checkCandidateInStruct(_temp2)==true); // results[_temp2].candidate== _temp2);
     // results[_temp2].vote= results[_temp2].vote+1; // голосуем за нужного кандидата и увеличиваем счетчик на один
      listResults[id].vote= listResults[id].vote+1;
