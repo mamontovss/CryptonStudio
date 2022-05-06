@@ -7,7 +7,7 @@ uint public winner=0;
 
 
 constructor (){
-    owner= msg.sender;
+    owner= msg.sender; // идентификация создателя контаркта 
 }
 
 struct CandidateResults{ // структура которая хранит данные об адресе кандидата
