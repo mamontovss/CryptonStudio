@@ -68,8 +68,8 @@ function endvoting() public {
     address payable _to= payable (listResults[id].candidate);
     address _thiscontract = address(this);  //узнаем адрес текущего контракта
     //_to.transfer(_thiscontract.balance); // переводим все что есть на контракте на нужный адресс;
-    uint amount =_thiscontract.balance- (((_thiscontract.balance)/100)*10);  // вычет комисии в 10 %
-    _to.transfer(_thiscontract.balance);
+    uint _amount =_thiscontract.balance- (((_thiscontract.balance)/100)*10);  // вычет комисии в 10 %
+    _to.transfer(_amount); // перевод зачисленной суммы на контракт за вычетом комисии
 }
 
 function ownerBalance() public returns (uint _to){
