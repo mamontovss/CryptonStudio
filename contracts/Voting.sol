@@ -6,8 +6,10 @@ uint public id=0;
 uint public winner=0;
 bool public endvoting;
 uint time;
-uint public winnerid=0; // ID победителя
-uint public maxValue=0; // макс значение
+
+// В ходе голосования, при каждом голосе запоминаем отслеживаем такого кандидата который содержит максимальное кол-во голосов 
+uint public winnerid=0; // ID победителя в голосовании
+uint public maxValue=0; // макс значение голосов среди проголосовавших
 
 
 constructor (){
