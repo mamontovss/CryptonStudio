@@ -54,6 +54,10 @@ function vote (address _temp2) public {  // функция которая поз
     require (votingStatus[msg.sender].voted == false && checkCandidateInStruct(_temp2)==true && endvoting==false); // results[_temp2].candidate== _temp2);
     // results[_temp2].vote= results[_temp2].vote+1; // голосуем за нужного кандидата и увеличиваем счетчик на один
      listResults[id].vote= listResults[id].vote+1;
+     if (maxValue < listResults[id].vote) {  // При голосовании за кандидидата запоминается максимальное колчество голосов и ид такого кандидата, таким образом вычиляется победитель
+         maxValue = listResults[id].vote;
+         winnerid = id;
+     }
     votingStatus[msg.sender].voted = true;
 }
 
@@ -83,16 +87,8 @@ function ownerBalance() public returns (uint _to){
     _to= address(this).balance;
 }
 
-function findMaxValue() public returns (uint _winnerid){  // поиск победителя
-    uint _max;
-    _max= listResults[id].vote;
-     for (uint _i = 0; _i<=id; _i++) {  //for loop example
-        if (listResults[id].vote<listResults[_i].vote) {
-            _max= listResults[_i].vote;
-            _winnerid =_i;
-        }
-           
-      }
+function findMaxValue() public view returns (uint _winner){  // поиск победителя
+    return winnerid;
     
 }
 
