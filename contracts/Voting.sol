@@ -32,6 +32,7 @@ mapping (address=> Voter) public votingStatus;
 //mapping (address=> CandidateResults) public results;
 mapping (address => Apply) public checkPayed; // мэппинг для проверки была ли оплпта для участия в голосовании
 mapping (uint => CandidateResults) public listResults; // мэпинг ключ - структура
+mapping ( address=> CandidateResults) public adresInVoting; // мэпинг адрес и структура кандидатов чтобы проверять есть ли добавляемый кандидат уже в списке
 
 function addVoter (address _temp) public payable { // Функция которая добавляет кандидата для голосования
   require (checkPayed[_temp].pay == true && checkCandidateInStruct(_temp)!=true && endvoting==false && msg.sender == owner); // Проверка оплаты и что такой кадидат уже не добавлен и добавлять кандидатов может только owner
@@ -39,7 +40,7 @@ function addVoter (address _temp) public payable { // Функция котор�
   id= id+1;
   listResults[id].vote = 0;
   listResults[id].candidate = _temp;
-  
+  adresInVoting[_temp].candidate = _temp;
  // results[msg.sender].vote=0; 
   // results[_temp].candidate = _temp;
 }
@@ -61,15 +62,10 @@ function vote (address _temp2) public {  // функция которая поз
     votingStatus[msg.sender].voted = true;
 }
 
-function checkCandidateInStruct(address _temp2) public returns(bool _r){
-
-    for (uint _i = 0; _i<=id; _i++) {  //for loop example
-        if (listResults[id].candidate == _temp2) {
-            _r = true;
-        }
-           
-      }
-
+function checkCandidateInStruct(address _temp2) public view returns(bool _r){
+    if (adresInVoting[_temp2].candidate == _temp2){
+        _r = true;
+    }
 }
 
 function endVote() public { // Функция позволяющая пользователю который произвел оплату завершить голосование через 3 дня после начала
